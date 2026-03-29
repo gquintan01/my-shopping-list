@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Shopping List</title>
+  <style>
+    :root {
+      --bg: #f5f7fb;
+      --card: #ffffff;
+      --text: #172033;
+      --muted: #64748b;
+      --border: #dbe3ef;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --danger: #dc2626;
+      --danger-hover: #b91c1c;
+      --success: #16a34a;
+      --warning: #d97706;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 100%);
+      color: var(--text);
+    }
+
+    .container {
+      width: min(1100px, calc(100% - 24px));
+      margin: 24px auto 40px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, #1e3a8a, #2563eb 60%, #60a5fa);
+      color: white;
+      padding: 28px;
+      border-radius: 24px;
+      box-shadow: var(--shadow);
+      margin-bottom: 20px;
+    }
+
+    .hero h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+    }
+
+    .hero p {
+      margin: 0;
+      line-height: 1.55;
+      max-width: 760px;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 2fr;
+      gap: 20px;
+      align-items: start;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 20px;
+    }
+
+    .card h2, .card h3 {
+      margin-top: 0;
+      margin-bottom: 14px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .form-group.full { grid-column: 1 / -1; }
+
+    label {
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    input, select, button {
+      font: inherit;
+    }
+
+    input, select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 11px 12px;
+      background: #fff;
+      color: var(--text);
+    }
+
+    input:focus, select:focus {
+      outline: 2px solid rgba(37, 99, 235, 0.18);
+      border-color: var(--primary);
+    }
+
+    .button-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      border-radius: 12px;
+      padding: 11px 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 700;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--primary-hover); }
+
+    .btn-secondary {
+      background: #e8eefc;
+      color: #1e3a8a;
+    }
+
+    .btn-secondary:hover { background: #dbe7ff; }
+
+    .btn-danger {
+      background: #fee2e2;
+      color: var(--danger);
+    }
+
+    .btn-danger:hover { background: #fecaca; }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .stat-box {
+      background: #f8fbff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+    }
+
+    .stat-box span {
+      display: block;
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    .stat-box strong {
+      font-size: 1.4rem;
+    }
+
+    .toolbar {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr 0.9fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .list-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-height: 70vh;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .item {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 14px;
+      align-items: center;
+      background: white;
+    }
+
+    .item.done {
+      background: #f0fdf4;
+      border-color: #bbf7d0;
+      opacity: 0.88;
+    }
+
+    .item-top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .meta {
+      font-size: 0.92rem;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .action-btn {
+      padding: 9px 12px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+    }
+
+    .checkbox-col {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      min-width: 86px;
+    }
+
+    .check-label {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+
+    .big-check {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--success);
+      cursor: pointer;
+    }
+
+    .empty {
+      text-align: center;
+      color: var(--muted);
+      padding: 28px 10px;
+      border: 1px dashed var(--border);
+      border-radius: 16px;
+      background: #fafcff;
+    }
+
+    .helper {
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 0.87rem;
+      line-height: 1.5;
+    }
+
+    .config-box {
+      margin-top: 18px;
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .config-box code {
+      display: block;
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: rgba(255,255,255,0.75);
+      padding: 12px;
+      border-radius: 12px;
+      margin-top: 8px;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 920px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .form-grid,
+      .toolbar,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .item {
+        grid-template-columns: 1fr;
+      }
+
+      .actions {
+        justify-content: flex-start;
+      }
+
+      .checkbox-col {
+        align-items: flex-start;
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>🛒 My Shopping List</h1>
+      <p>
+        Aplicación web para gestionar artículos del hogar, seleccionar productos para la próxima compra,
+        editarlos en línea y marcar los artículos ya cargados en el carrito físico para retirarlos de la lista actual.
+      </p>
+    </section>
+
+    <main class="grid">
+      <section class="card">
+        <h2 id="formTitle">Agregar artículo</h2>
+        <p class="helper">
+          Puedes crear nuevos productos, modificar existentes o eliminarlos. La información se sincroniza en línea
+          usando Firebase Realtime Database.
+        </p>
+
+        <form id="itemForm">
+          <div class="form-grid">
+            <div class="form-group full">
+              <label for="name">Nombre del artículo</label>
+              <input id="name" type="text" placeholder="Ej. Arroz" required />
+            </div>
+
+            <div class="form-group">
+              <label for="category">Categoría</label>
+              <select id="category" required>
+                <option value="">Selecciona</option>
+                <option value="Despensa">Despensa</option>
+                <option value="Lácteos y huevos">Lácteos y huevos</option>
+                <option value="Carnes y embutidos">Carnes y embutidos</option>
+                <option value="Frutas y vegetales">Frutas y vegetales</option>
+                <option value="Bebidas">Bebidas</option>
+                <option value="Limpieza">Limpieza</option>
+                <option value="Aseo personal">Aseo personal</option>
+                <option value="Hogar">Hogar</option>
+                <option value="Mascotas">Mascotas</option>
+                <option value="Otros">Otros</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="unit">Unidad</label>
+              <select id="unit" required>
+                <option value="unidad">unidad</option>
+                <option value="lb">lb</option>
+                <option value="kg">kg</option>
+                <option value="paquete">paquete</option>
+                <option value="docena">docena</option>
+                <option value="botella">botella</option>
+                <option value="galón">galón</option>
+                <option value="rollo">rollo</option>
+                <option value="caja">caja</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="quantity">Cantidad sugerida</label>
+              <input id="quantity" type="number" min="1" step="1" value="1" required />
+            </div>
+
+            <div class="form-group">
+              <label for="priority">Prioridad</label>
+              <select id="priority">
+                <option value="Normal">Normal</option>
+                <option value="Alta">Alta</option>
+                <option value="Baja">Baja</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="button-row">
+            <button type="submit" class="btn-primary" id="saveBtn">Guardar artículo</button>
+            <button type="button" class="btn-secondary" id="cancelEditBtn" style="display:none;">Cancelar edición</button>
+            <button type="button" class="btn-secondary" id="seedBtn">Cargar lista preliminar de Panamá</button>
+          </div>
+        </form>
+
+        <div class="config-box">
+          <strong>Configuración requerida</strong>
+          <div class="helper">
+            Reemplaza el objeto <b>firebaseConfig</b> en el código por los valores de tu proyecto Firebase.
+          </div>
+          <code>const firebaseConfig = {
+  apiKey: "TU_API_KEY",
+  authDomain: "TU_PROYECTO.firebaseapp.com",
+  databaseURL: "https://TU_PROYECTO-default-rtdb.firebaseio.com",
+  projectId: "TU_PROYECTO",
+  storageBucket: "TU_PROYECTO.firebasestorage.app",
+  messagingSenderId: "TU_SENDER_ID",
+  appId: "TU_APP_ID"
+};</code>
+        </div>
+
+        <p class="footer-note">
+          Consejo: este diseño funciona bien en GitHub Pages porque la app es estática. La actualización online de la lista se maneja desde Firebase.
+        </p>
+      </section>
+
+      <section class="card">
+        <h2>Lista activa de compras</h2>
+
+        <div class="stats">
+          <div class="stat-box">
+            <span>Total de artículos</span>
+            <strong id="totalItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Para próxima compra</span>
+            <strong id="selectedItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Cargados al carrito</span>
+            <strong id="completedItems">0</strong>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
+          <select id="filterCategory">
+            <option value="">Todas las categorías</option>
+            <option value="Despensa">Despensa</option>
+            <option value="Lácteos y huevos">Lácteos y huevos</option>
+            <option value="Carnes y embutidos">Carnes y embutidos</option>
+            <option value="Frutas y vegetales">Frutas y vegetales</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Aseo personal">Aseo personal</option>
+            <option value="Hogar">Hogar</option>
+            <option value="Mascotas">Mascotas</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <select id="viewMode">
+            <option value="active">Ver lista actual</option>
+            <option value="all">Ver todo</option>
+            <option value="completed">Ver cargados al carrito</option>
+          </select>
+        </div>
+
+        <div class="list-wrap" id="itemsContainer"></div>
+      </section>
+    </main>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js';
+    import {
+      getDatabase,
+      ref,
+      push,
+      update,
+      remove,
+      onValue,
+      get,
+      child
+    } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js';
+
+  const firebaseConfig = {
+  apiKey: "AIzaSyBrKi55QobN0BJdBM7UMNad7Z9qoETS3DE",
+  authDomain: "my-shopping-list-48c48.firebaseapp.com",
+  databaseURL: "https://my-shopping-list-48c48-default-rtdb.firebaseio.com",
+  projectId: "my-shopping-list-48c48",
+  storageBucket: "my-shopping-list-48c48.firebasestorage.app",
+  messagingSenderId: "686744867999",
+  appId: "1:686744867999:web:995027a5c249212c323eaa"
+};
+
+    let app;
+    let db;
+
+    try {
+      app = initializeApp(firebaseConfig);
+      db = getDatabase(app);
+    } catch (error) {
+      console.error('Firebase no inicializado:', error);
+    }
+
+    const itemsRef = db ? ref(db, 'shoppingItems') : null;
+
+    const form = document.getElementById('itemForm');
+    const nameInput = document.getElementById('name');
+    const categoryInput = document.getElementById('category');
+    const unitInput = document.getElementById('unit');
+    const quantityInput = document.getElementById('quantity');
+    const priorityInput = document.getElementById('priority');
+    const itemsContainer = document.getElementById('itemsContainer');
+    const searchInput = document.getElementById('searchInput');
+    const filterCategory = document.getElementById('filterCategory');
+    const viewMode = document.getElementById('viewMode');
+    const seedBtn = document.getElementById('seedBtn');
+    const cancelEditBtn = document.getElementById('cancelEditBtn');
+    const formTitle = document.getElementById('formTitle');
+    const saveBtn = document.getElementById('saveBtn');
+
+    const totalItemsEl = document.getElementById('totalItems');
+    const selectedItemsEl = document.getElementById('selectedItems');
+    const completedItemsEl = document.getElementById('completedItems');
+
+    let items = [];
+    let editingId = null;
+
+    const preliminaryItems = [
+      { name: 'Arroz', category: 'Despensa', unit: 'lb', quantity: 5, priority: 'Alta' },
+      { name: 'Azúcar', category: 'Despensa', unit: 'lb', quantity: 2, priority: 'Normal' },
+      { name: 'Sal', category: 'Despensa', unit: 'lb', quantity: 1, priority: 'Normal' },
+      { name: 'Aceite vegetal', category: 'Despensa', unit: 'botella', quantity: 1, priority: 'Alta' },
+      { name: 'Pasta', category: 'Despensa', unit: 'paquete', quantity: 2, priority: 'Normal' },
+      { name: 'Salsa de tomate', category: 'Despensa', unit: 'unidad', quantity: 2, priority: 'Normal' },
+      { name: 'Atún', category: 'Despensa', unit: 'unidad', quantity: 4, priority: 'Normal' },
+      { name: 'Frijoles', category: 'Despensa', unit: 'unidad', quantity: 2, priority: 'Normal' },
+      { name: 'Lentejas', category: 'Despensa', unit: 'unidad', quantity: 1, priority: 'Baja' },
+      { name: 'Harina', category: 'Despensa', unit: 'lb', quantity: 1, priority: 'Baja' },
+      { name: 'Café', category: 'Bebidas', unit: 'paquete', quantity: 1, priority: 'Alta' },
+      { name: 'Leche', category: 'Lácteos y huevos', unit: 'unidad', quantity: 2, priority: 'Alta' },
+      { name: 'Huevos', category: 'Lácteos y huevos', unit: 'docena', quantity: 1, priority: 'Alta' },
+      { name: 'Queso amarillo', category: 'Lácteos y huevos', unit: 'paquete', quantity: 1, priority: 'Normal' },
+      { name: 'Yogurt', category: 'Lácteos y huevos', unit: 'unidad', quantity: 4, priority: 'Baja' },
+      { name: 'Pollo', category: 'Carnes y embutidos', unit: 'lb', quantity: 3, priority: 'Alta' },
+      { name: 'Carne molida', category: 'Carnes y embutidos', unit: 'lb', quantity: 2, priority: 'Normal' },
+      { name: 'Jamón', category: 'Carnes y embutidos', unit: 'paquete', quantity: 1, priority: 'Normal' },
+      { name: 'Manzanas', category: 'Frutas y vegetales', unit: 'lb', quantity: 2, priority: 'Normal' },
+      { name: 'Bananas', category: 'Frutas y vegetales', unit: 'lb', quantity: 2, priority: 'Normal' },
+      { name: 'Tomates', category: 'Frutas y vegetales', unit: 'lb', quantity: 2, priority: 'Alta' },
+      { name: 'Cebollas', category: 'Frutas y vegetales', unit: 'lb', quantity: 2, priority: 'Alta' },
+      { name: 'Papas', category: 'Frutas y vegetales', unit: 'lb', quantity: 3, priority: 'Normal' },
+      { name: 'Lechuga', category: 'Frutas y vegetales', unit: 'unidad', quantity: 1, priority: 'Baja' },
+      { name: 'Detergente de ropa', category: 'Limpieza', unit: 'unidad', quantity: 1, priority: 'Alta' },
+      { name: 'Lavaplatos', category: 'Limpieza', unit: 'unidad', quantity: 1, priority: 'Alta' },
+      { name: 'Cloro', category: 'Limpieza', unit: 'botella', quantity: 1, priority: 'Normal' },
+      { name: 'Desinfectante', category: 'Limpieza', unit: 'unidad', quantity: 1, priority: 'Normal' },
+      { name: 'Papel higiénico', category: 'Hogar', unit: 'paquete', quantity: 1, priority: 'Alta' },
+      { name: 'Servilletas', category: 'Hogar', unit: 'paquete', quantity: 1, priority: 'Normal' },
+      { name: 'Jabón de baño', category: 'Aseo personal', unit: 'unidad', quantity: 4, priority: 'Normal' },
+      { name: 'Pasta dental', category: 'Aseo personal', unit: 'unidad', quantity: 2, priority: 'Normal' },
+      { name: 'Shampoo', category: 'Aseo personal', unit: 'unidad', quantity: 1, priority: 'Normal' },
+      { name: 'Agua embotellada', category: 'Bebidas', unit: 'caja', quantity: 1, priority: 'Normal' }
+    ];
+
+    function resetForm() {
+      form.reset();
+      quantityInput.value = 1;
+      unitInput.value = 'unidad';
+      priorityInput.value = 'Normal';
+      editingId = null;
+      formTitle.textContent = 'Agregar artículo';
+      saveBtn.textContent = 'Guardar artículo';
+      cancelEditBtn.style.display = 'none';
+    }
+
+    function populateForm(item) {
+      nameInput.value = item.name;
+      categoryInput.value = item.category;
+      unitInput.value = item.unit;
+      quantityInput.value = item.quantity;
+      priorityInput.value = item.priority || 'Normal';
+      editingId = item.id;
+      formTitle.textContent = 'Modificar artículo';
+      saveBtn.textContent = 'Actualizar artículo';
+      cancelEditBtn.style.display = 'inline-flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderItems() {
+      const search = searchInput.value.trim().toLowerCase();
+      const categoryFilter = filterCategory.value;
+      const mode = viewMode.value;
+
+      const filtered = items
+        .filter(item => {
+          const matchesSearch = item.name.toLowerCase().includes(search);
+          const matchesCategory = !categoryFilter || item.category === categoryFilter;
+          const matchesMode =
+            mode === 'all' ? true :
+            mode === 'completed' ? item.inCart :
+            item.selectedForNextBuy && !item.inCart;
+
+          return matchesSearch && matchesCategory && matchesMode;
+        })
+        .sort((a, b) => {
+          if (a.inCart !== b.inCart) return a.inCart ? 1 : -1;
+          return a.name.localeCompare(b.name, 'es');
+        });
+
+      totalItemsEl.textContent = items.length;
+      selectedItemsEl.textContent = items.filter(item => item.selectedForNextBuy && !item.inCart).length;
+      completedItemsEl.textContent = items.filter(item => item.inCart).length;
+
+      if (!filtered.length) {
+        itemsContainer.innerHTML = '<div class="empty">No hay artículos para mostrar con los filtros actuales.</div>';
+        return;
+      }
+
+      itemsContainer.innerHTML = filtered.map(item => `
+        <article class="item ${item.inCart ? 'done' : ''}">
+          <div class="checkbox-col">
+            <label class="check-label">
+              <input class="big-check select-next" type="checkbox" data-id="${item.id}" ${item.selectedForNextBuy ? 'checked' : ''} ${item.inCart ? 'disabled' : ''} />
+              <br/>Próxima compra
+            </label>
+            <label class="check-label">
+              <input class="big-check mark-cart" type="checkbox" data-id="${item.id}" ${item.inCart ? 'checked' : ''} ${!item.selectedForNextBuy && !item.inCart ? 'disabled' : ''} />
+              <br/>Ya en carrito
+            </label>
+          </div>
+
+          <div>
+            <div class="item-top">
+              <strong>${item.name}</strong>
+              <span class="badge">${item.category}</span>
+              <span class="badge">${item.priority || 'Normal'}</span>
+            </div>
+            <div class="meta">
+              <span>Cantidad sugerida: <strong>${item.quantity}</strong> ${item.unit}</span>
+              <span>Estado: <strong>${item.inCart ? 'Cargado al carrito' : item.selectedForNextBuy ? 'Pendiente de compra' : 'En catálogo'}</strong></span>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="action-btn btn-secondary edit-btn" data-id="${item.id}">Editar</button>
+            <button class="action-btn btn-danger delete-btn" data-id="${item.id}">Borrar</button>
+          </div>
+        </article>
+      `).join('');
+
+      bindDynamicEvents();
+    }
+
+    function bindDynamicEvents() {
+      document.querySelectorAll('.edit-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const item = items.find(x => x.id === btn.dataset.id);
+          if (item) populateForm(item);
+        });
+      });
+
+      document.querySelectorAll('.delete-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const item = items.find(x => x.id === btn.dataset.id);
+          if (!item) return;
+          const confirmed = confirm(`¿Deseas borrar "${item.name}"?`);
+          if (!confirmed || !itemsRef) return;
+          await remove(ref(db, `shoppingItems/${item.id}`));
+        });
+      });
+
+      document.querySelectorAll('.select-next').forEach(check => {
+        check.addEventListener('change', async () => {
+          if (!itemsRef) return;
+          const id = check.dataset.id;
+          await update(ref(db, `shoppingItems/${id}`), {
+            selectedForNextBuy: check.checked,
+            inCart: false
+          });
+        });
+      });
+
+      document.querySelectorAll('.mark-cart').forEach(check => {
+        check.addEventListener('change', async () => {
+          if (!itemsRef) return;
+          const id = check.dataset.id;
+          await update(ref(db, `shoppingItems/${id}`), {
+            inCart: check.checked,
+            selectedForNextBuy: check.checked ? false : true
+          });
+        });
+      });
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!itemsRef) {
+        alert('Debes configurar Firebase antes de guardar artículos.');
+        return;
+      }
+
+      const payload = {
+        name: nameInput.value.trim(),
+        category: categoryInput.value,
+        unit: unitInput.value,
+        quantity: Number(quantityInput.value),
+        priority: priorityInput.value,
+        selectedForNextBuy: false,
+        inCart: false,
+        updatedAt: new Date().toISOString()
+      };
+
+      if (!payload.name || !payload.category) return;
+
+      if (editingId) {
+        const current = items.find(item => item.id === editingId);
+        await update(ref(db, `shoppingItems/${editingId}`), {
+          ...payload,
+          selectedForNextBuy: current?.selectedForNextBuy ?? false,
+          inCart: current?.inCart ?? false
+        });
+      } else {
+        await push(itemsRef, {
+          ...payload,
+          createdAt: new Date().toISOString()
+        });
+      }
+
+      resetForm();
+    });
+
+    cancelEditBtn.addEventListener('click', resetForm);
+
+    [searchInput, filterCategory, viewMode].forEach(el => {
+      el.addEventListener('input', renderItems);
+      el.addEventListener('change', renderItems);
+    });
+
+    seedBtn.addEventListener('click', async () => {
+      if (!itemsRef) {
+        alert('Debes configurar Firebase antes de cargar la lista preliminar.');
+        return;
+      }
+
+      const snapshot = await get(child(ref(db), 'shoppingItems'));
+      if (snapshot.exists()) {
+        const confirmed = confirm('Ya existen artículos guardados. ¿Deseas agregar la lista preliminar de todos modos?');
+        if (!confirmed) return;
+      }
+
+      for (const item of preliminaryItems) {
+        await push(itemsRef, {
+          ...item,
+          selectedForNextBuy: false,
+          inCart: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
+      }
+    });
+
+    if (itemsRef) {
+      onValue(itemsRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        items = Object.entries(data).map(([id, value]) => ({ id, ...value }));
+        renderItems();
+      });
+    } else {
+      itemsContainer.innerHTML = '<div class="empty">Configura Firebase para comenzar a usar la aplicación.</div>';
+    }
+
+    resetForm();
+  </script>
+</body>
+</html>
