@@ -551,6 +551,9 @@
       child
     } from 'https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js';
 
+import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } 
+from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+    
     const firebaseConfig = {
       apiKey: "AIzaSyBrKi55QobN0BJdBM7UMNad7Z9qoETS3DE",
       authDomain: "my-shopping-list-48c48.firebaseapp.com",
@@ -560,7 +563,40 @@
       messagingSenderId: "686744867999",
       appId: "1:686744867999:web:995027a5c249212c323eaa"
     };
+const loginBtn = document.getElementById("loginBtn");
+const logoutBtn = document.getElementById("logoutBtn");
 
+loginBtn.addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Error login:", error);
+  }
+});
+
+logoutBtn.addEventListener("click", async () => {
+  await signOut(auth);
+});
+    let currentUser = null;
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    currentUser = user;
+
+    loginBtn.style.display = "none";
+    logoutBtn.style.display = "inline-block";
+
+    console.log("Usuario logueado:", user.uid);
+
+  } else {
+    currentUser = null;
+
+    loginBtn.style.display = "inline-block";
+    logoutBtn.style.display = "none";
+  }
+});
+
+    
     let app;
     let db;
 
