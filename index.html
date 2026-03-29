@@ -8,10 +8,7 @@
   
   <title>My Shopping List</title>
 
-    <div style="text-align:right; margin-bottom:15px;">
-  <button id="loginBtn" class="btn-primary">Iniciar sesión con Google</button>
-  <button id="logoutBtn" class="btn-secondary" style="display:none;">Cerrar sesión</button>
-</div>
+
 
   
   <style>
@@ -414,6 +411,12 @@
   </style>
 </head>
 <body>
+ 
+    <div style="text-align:right; margin-bottom:15px;">
+  <button id="loginBtn" class="btn-primary">Iniciar sesión con Google</button>
+  <button id="logoutBtn" class="btn-secondary" style="display:none;">Cerrar sesión</button>
+</div>
+  
   <div class="container">
     <section class="hero">
       <h1>🛒 My Shopping List</h1>
@@ -565,6 +568,9 @@ from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
     };
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
+
+console.log("loginBtn:", loginBtn);
+console.log("logoutBtn:", logoutBtn);
 
 loginBtn.addEventListener("click", async () => {
   try {
