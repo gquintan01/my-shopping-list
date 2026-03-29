@@ -566,6 +566,13 @@ from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
       messagingSenderId: "686744867999",
       appId: "1:686744867999:web:995027a5c249212c323eaa"
     };
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+    
 const loginBtn = document.getElementById("loginBtn");
 const logoutBtn = document.getElementById("logoutBtn");
 
@@ -603,15 +610,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
     
-    let app;
-    let db;
 
-    try {
-      app = initializeApp(firebaseConfig);
-      db = getDatabase(app);
-    } catch (error) {
-      console.error('Firebase no inicializado:', error);
-    }
 
     const itemsRef = db ? ref(db, 'shoppingItems') : null;
 
