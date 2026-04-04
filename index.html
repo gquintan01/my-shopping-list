@@ -13,7 +13,7 @@
   
   <style>
     :root {
-      --bg: #f5f7fb;
+      --bg: #eef3ff;
       --card: #ffffff;
       --text: #172033;
       --muted: #64748b;
@@ -21,62 +21,58 @@
       --primary: #2563eb;
       --primary-hover: #1d4ed8;
       --danger: #dc2626;
-      --danger-hover: #b91c1c;
       --success: #16a34a;
-      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
       --radius: 18px;
+      --radius-sm: 14px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
 
     body {
       margin: 0;
       font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: linear-gradient(180deg, #eef3ff 0%, var(--bg) 100%);
+      background: linear-gradient(180deg, #f4f7ff 0%, var(--bg) 100%);
       color: var(--text);
+    }
+
+    .top-actions {
+      width: min(1100px, calc(100% - 24px));
+      margin: 14px auto 0;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
 
     .container {
       width: min(1100px, calc(100% - 24px));
-      margin: 24px auto 40px;
+      margin: 14px auto 34px;
     }
 
     .hero {
       background: linear-gradient(135deg, #1e3a8a, #2563eb 60%, #60a5fa);
       color: white;
-      padding: 28px;
+      padding: 22px 24px;
       border-radius: 24px;
       box-shadow: var(--shadow);
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .hero h1 {
-      margin: 0 0 8px;
-      font-size: clamp(1.8rem, 4vw, 2.7rem);
-    }
-
-    .hero p {
       margin: 0;
-      line-height: 1.55;
-      max-width: 760px;
-      color: rgba(255,255,255,0.92);
+      font-size: clamp(1.6rem, 4vw, 2.4rem);
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: 1.2fr 2fr;
-      gap: 20px;
+      grid-template-columns: 1fr 1.25fr;
+      gap: 18px;
       align-items: start;
-    }
-
-    .left-panel {
-      order: 1;
-    }
-
-    .right-panel {
-      order: 2;
     }
 
     .card {
@@ -84,12 +80,19 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
-      padding: 20px;
+      padding: 18px;
     }
 
-    .card h2, .card h3 {
-      margin-top: 0;
-      margin-bottom: 14px;
+    .card h2 {
+      margin: 0 0 8px;
+      font-size: 1.25rem;
+    }
+
+    .section-intro {
+      margin: 0 0 14px;
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
     }
 
     .form-grid {
@@ -102,15 +105,13 @@
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
-    .form-group.full {
-      grid-column: 1 / -1;
-    }
+    .form-group.full { grid-column: 1 / -1; }
 
     label {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       font-weight: 600;
     }
 
@@ -136,6 +137,7 @@
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      margin-top: 6px;
     }
 
     button {
@@ -152,56 +154,48 @@
       color: white;
     }
 
-    .btn-primary:hover {
-      background: var(--primary-hover);
-    }
+    .btn-primary:hover { background: var(--primary-hover); }
 
     .btn-secondary {
       background: #e8eefc;
       color: #1e3a8a;
     }
 
-    .btn-secondary:hover {
-      background: #dbe7ff;
-    }
+    .btn-secondary:hover { background: #dbe7ff; }
 
     .btn-danger {
       background: #fee2e2;
       color: var(--danger);
     }
 
-    .btn-danger:hover {
-      background: #fecaca;
-    }
+    .btn-danger:hover { background: #fecaca; }
 
     .stats {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-bottom: 16px;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
     .stat-box {
       background: #f8fbff;
       border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 14px;
+      border-radius: var(--radius-sm);
+      padding: 13px;
     }
 
     .stat-box span {
       display: block;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       color: var(--muted);
-      margin-bottom: 6px;
+      margin-bottom: 4px;
     }
 
-    .stat-box strong {
-      font-size: 1.4rem;
-    }
+    .stat-box strong { font-size: 1.25rem; }
 
     .toolbar {
       display: grid;
-      grid-template-columns: 1.2fr 0.9fr 0.9fr;
+      grid-template-columns: 1.2fr 1fr 1fr;
       gap: 10px;
       margin-bottom: 14px;
     }
@@ -210,9 +204,9 @@
       display: flex;
       flex-direction: column;
       gap: 10px;
-      max-height: 70vh;
+      max-height: 68vh;
       overflow: auto;
-      padding-right: 4px;
+      padding-right: 2px;
     }
 
     .item {
@@ -221,7 +215,7 @@
       padding: 14px;
       display: grid;
       grid-template-columns: auto 1fr auto;
-      gap: 14px;
+      gap: 12px;
       align-items: center;
       background: white;
     }
@@ -232,12 +226,20 @@
       opacity: 0.92;
     }
 
+    .item-main { min-width: 0; }
+
     .item-top {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 4px;
+    }
+
+    .item-title {
+      font-size: 1rem;
+      font-weight: 800;
+      word-break: break-word;
     }
 
     .badge {
@@ -245,19 +247,19 @@
       align-items: center;
       border-radius: 999px;
       padding: 4px 10px;
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       font-weight: 700;
       background: #eff6ff;
       color: #1d4ed8;
     }
 
     .meta {
-      font-size: 0.92rem;
+      font-size: 0.9rem;
       color: var(--muted);
       display: flex;
       flex-wrap: wrap;
-      gap: 12px;
-      line-height: 1.45;
+      gap: 10px;
+      line-height: 1.4;
     }
 
     .actions {
@@ -277,9 +279,9 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      align-items: center;
+      align-items: flex-start;
       justify-content: center;
-      min-width: 110px;
+      min-width: 140px;
     }
 
     .check-label {
@@ -287,14 +289,14 @@
       align-items: center;
       gap: 8px;
       text-align: left;
-      font-size: 0.85rem;
+      font-size: 0.84rem;
       color: var(--muted);
       line-height: 1.2;
     }
 
     .big-check {
-      width: 22px;
-      height: 22px;
+      width: 20px;
+      height: 20px;
       accent-color: var(--success);
       cursor: pointer;
       flex-shrink: 0;
@@ -303,7 +305,7 @@
     .empty {
       text-align: center;
       color: var(--muted);
-      padding: 28px 10px;
+      padding: 28px 12px;
       border: 1px dashed var(--border);
       border-radius: 16px;
       background: #fafcff;
@@ -312,36 +314,33 @@
     .helper {
       color: var(--muted);
       font-size: 0.92rem;
-      line-height: 1.5;
+      line-height: 1.45;
+      margin: 0 0 12px;
     }
 
     @media (max-width: 920px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
+      .grid { grid-template-columns: 1fr; }
+      .list-wrap { max-height: none; }
     }
 
     @media (max-width: 700px) {
+      .top-actions,
       .container {
-        width: min(100%, calc(100% - 16px));
-        margin: 12px auto 24px;
+        width: min(100%, calc(100% - 14px));
       }
 
-      .grid {
-        grid-template-columns: 1fr;
+      .top-actions {
+        margin: 10px auto 0;
       }
 
-      .right-panel {
-        order: 1;
-      }
-
-      .left-panel {
-        order: 2;
+      .container {
+        margin: 10px auto 20px;
       }
 
       .hero {
-        padding: 18px;
+        padding: 16px 16px;
         border-radius: 18px;
+        margin-bottom: 12px;
       }
 
       .card {
@@ -355,6 +354,10 @@
         grid-template-columns: 1fr;
       }
 
+      .button-row button {
+        width: 100%;
+      }
+
       .item {
         grid-template-columns: 1fr;
         gap: 10px;
@@ -365,43 +368,26 @@
         flex-direction: row;
         align-items: center;
         justify-content: flex-start;
-        gap: 16px;
+        gap: 14px;
         min-width: auto;
         flex-wrap: wrap;
       }
 
-      .check-label {
-        text-align: left;
-        font-size: 0.9rem;
-      }
-
-      .big-check {
-        width: 20px;
-        height: 20px;
-      }
-
-      .item-top {
-        gap: 8px;
-      }
-
       .meta {
         flex-direction: column;
-        gap: 6px;
+        gap: 4px;
       }
 
       .actions {
         justify-content: flex-start;
-        gap: 8px;
       }
 
       .action-btn {
         flex: 1;
-        min-width: 110px;
+        min-width: 104px;
         text-align: center;
       }
 
-      .toolbar input,
-      .toolbar select,
       input,
       select,
       button {
@@ -420,62 +406,12 @@
   <div class="container">
     <section class="hero">
       <h1>🛒 My Shopping List</h1>
-      <p>
-        Aplicación web para gestionar artículos del hogar, seleccionar productos para la próxima compra,
-        editarlos en línea y marcar los artículos ya cargados en el carrito físico para retirarlos de la lista actual.
-      </p>
     </section>
 
     <main class="grid">
-      <section class="card right-panel">
-        <h2>Lista activa de compras</h2>
-
-        <div class="stats">
-          <div class="stat-box">
-            <span>Total de artículos</span>
-            <strong id="totalItems">0</strong>
-          </div>
-          <div class="stat-box">
-            <span>Para próxima compra</span>
-            <strong id="selectedItems">0</strong>
-          </div>
-          <div class="stat-box">
-            <span>Cargados al carrito</span>
-            <strong id="completedItems">0</strong>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
-          <select id="filterCategory">
-            <option value="">Todas las categorías</option>
-            <option value="Despensa">Despensa</option>
-            <option value="Lácteos y huevos">Lácteos y huevos</option>
-            <option value="Carnes y embutidos">Carnes y embutidos</option>
-            <option value="Frutas y vegetales">Frutas y vegetales</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Limpieza">Limpieza</option>
-            <option value="Aseo personal">Aseo personal</option>
-            <option value="Hogar">Hogar</option>
-            <option value="Mascotas">Mascotas</option>
-            <option value="Otros">Otros</option>
-          </select>
-          <select id="viewMode">
-            <option value="active">Ver lista actual</option>
-            <option value="all">Ver todo</option>
-            <option value="completed">Ver cargados al carrito</option>
-          </select>
-        </div>
-
-        <div class="list-wrap" id="itemsContainer"></div>
-      </section>
-
       <section class="card left-panel">
         <h2 id="formTitle">Agregar artículo</h2>
-        <p class="helper">
-          Puedes crear nuevos productos, modificar existentes o eliminarlos. La información se sincroniza en línea
-          usando Firebase Realtime Database.
-        </p>
+        <p class="section-intro">Agrega, modifica o elimina artículos de forma rápida.</p>
 
         <form id="itemForm">
           <div class="form-grid">
@@ -534,11 +470,52 @@
           <div class="button-row">
             <button type="submit" class="btn-primary" id="saveBtn">Guardar artículo</button>
             <button type="button" class="btn-secondary" id="cancelEditBtn" style="display:none;">Cancelar edición</button>
-            
             <button type="button" class="btn-secondary" id="seedBtn" style="display:none;">Cargar lista preliminar de Panamá</button>
-            
           </div>
         </form>
+      </section>
+
+      <section class="card right-panel">
+        <h2>Lista de artículos seleccionados</h2>
+
+        <div class="stats">
+          <div class="stat-box">
+            <span>Total de artículos</span>
+            <strong id="totalItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Para próxima compra</span>
+            <strong id="selectedItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Cargados al carrito</span>
+            <strong id="completedItems">0</strong>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
+          <select id="filterCategory">
+            <option value="">Todas las categorías</option>
+            <option value="Despensa">Despensa</option>
+            <option value="Lácteos y huevos">Lácteos y huevos</option>
+            <option value="Carnes y embutidos">Carnes y embutidos</option>
+            <option value="Frutas y vegetales">Frutas y vegetales</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Aseo personal">Aseo personal</option>
+            <option value="Hogar">Hogar</option>
+            <option value="Mascotas">Mascotas</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <select id="viewMode">
+            <option value="active">Ver lista actual</option>
+            <option value="all">Ver todo</option>
+            <option value="completed">Ver cargados al carrito</option>
+          </select>
+        </div>
+
+        <div class="list-wrap" id="itemsContainer"></div>
       </section>
     </main>
   </div>
@@ -744,7 +721,7 @@ onAuthStateChanged(auth, (user) => {
 
           <div>
             <div class="item-top">
-              <strong>${item.name}</strong>
+              <strong class="item-title">${item.name}</strong>
               <span class="badge">${item.category}</span>
               <span class="badge">${item.priority || 'Normal'}</span>
             </div>
