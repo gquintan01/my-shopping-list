@@ -72,11 +72,11 @@
     }
 
     .left-panel {
-      order: 2;
+      order: 1;
     }
 
     .right-panel {
-      order: 1;
+      order: 2;
     }
 
     .card {
@@ -331,11 +331,11 @@
         grid-template-columns: 1fr;
       }
 
-      .right-panel {
+      .left-panel {
         order: 1;
       }
 
-      .left-panel {
+      .right-panel {
         order: 2;
       }
 
@@ -423,57 +423,9 @@
 </section>
 
     <main class="grid">
-<section class="card right-panel">
-        <h2>Lista de artículos seleccionados</h2>
-
-        <div class="stats">
-          <div class="stat-box">
-            <span>Total de artículos</span>
-            <strong id="totalItems">0</strong>
-          </div>
-          <div class="stat-box">
-            <span>Para próxima compra</span>
-            <strong id="selectedItems">0</strong>
-          </div>
-          <div class="stat-box">
-            <span>Cargados al carrito</span>
-            <strong id="completedItems">0</strong>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
-          <select id="filterCategory">
-            <option value="">Todas las categorías</option>
-            <option value="Despensa">Despensa</option>
-            <option value="Lácteos y huevos">Lácteos y huevos</option>
-            <option value="Carnes y embutidos">Carnes y embutidos</option>
-            <option value="Frutas y vegetales">Frutas y vegetales</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Limpieza">Limpieza</option>
-            <option value="Aseo personal">Aseo personal</option>
-            <option value="Hogar">Hogar</option>
-            <option value="Mascotas">Mascotas</option>
-            <option value="Otros">Otros</option>
-          </select>
-          <select id="viewMode">
-            <option value="active">Ver lista actual</option>
-            <option value="all">Ver todo</option>
-            <option value="completed">Ver cargados al carrito</option>
-          </select>
-        </div>
-
-        <div class="list-wrap" id="itemsContainer"></div>
-      </section>
-
-<section class="card left-panel">
+      <section class="card left-panel">
         <h2 id="formTitle">Agregar artículo</h2>
-        <p class="helper">
-          Puedes crear nuevos productos, modificar existentes o eliminarlos. La información se sincroniza en línea
-          usando Firebase Realtime Database.
-        </p>
-
-        <form id="itemForm">
+<form id="itemForm">
           <div class="form-grid">
             <div class="form-group full">
               <label for="name">Nombre del artículo</label>
@@ -530,10 +482,56 @@
           <div class="button-row">
             <button type="submit" class="btn-primary" id="saveBtn">Guardar artículo</button>
             <button type="button" class="btn-secondary" id="cancelEditBtn" style="display:none;">Cancelar edición</button>
-</div>
+            
+            <button type="button" class="btn-secondary" id="seedBtn" style="display:none;">Cargar lista preliminar de Panamá</button>
+            
+          </div>
         </form>
       </section>
-      </main>
+
+      <section class="card right-panel">
+        <h2>Lista de artículos seleccionados</h2>
+
+        <div class="stats">
+          <div class="stat-box">
+            <span>Total de artículos</span>
+            <strong id="totalItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Para próxima compra</span>
+            <strong id="selectedItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Cargados al carrito</span>
+            <strong id="completedItems">0</strong>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
+          <select id="filterCategory">
+            <option value="">Todas las categorías</option>
+            <option value="Despensa">Despensa</option>
+            <option value="Lácteos y huevos">Lácteos y huevos</option>
+            <option value="Carnes y embutidos">Carnes y embutidos</option>
+            <option value="Frutas y vegetales">Frutas y vegetales</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Aseo personal">Aseo personal</option>
+            <option value="Hogar">Hogar</option>
+            <option value="Mascotas">Mascotas</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <select id="viewMode">
+            <option value="active">Ver lista actual</option>
+            <option value="all">Ver todo</option>
+            <option value="completed">Ver cargados al carrito</option>
+          </select>
+        </div>
+
+        <div class="list-wrap" id="itemsContainer"></div>
+      </section>
+    </main>
   </div>
 
   <script type="module">
@@ -619,6 +617,7 @@ onAuthStateChanged(auth, (user) => {
     const searchInput = document.getElementById('searchInput');
     const filterCategory = document.getElementById('filterCategory');
     const viewMode = document.getElementById('viewMode');
+    const seedBtn = document.getElementById('seedBtn');
     const cancelEditBtn = document.getElementById('cancelEditBtn');
     const formTitle = document.getElementById('formTitle');
     const saveBtn = document.getElementById('saveBtn');
@@ -840,6 +839,27 @@ onAuthStateChanged(auth, (user) => {
       el.addEventListener('input', renderItems);
       el.addEventListener('change', renderItems);
     });
+
+    seedBtn.addEventListener('click', async () => {
+      if (!itemsRef) {
+        alert('Debes configurar Firebase antes de cargar la lista preliminar.');
+        return;
+      }
+
+      const snapshot = await get(child(ref(db), 'shoppingItems'));
+      if (snapshot.exists()) {
+        const confirmed = confirm('Ya existen artículos guardados. ¿Deseas agregar la lista preliminar de todos modos?');
+        if (!confirmed) return;
+      }
+
+      for (const item of preliminaryItems) {
+        await push(itemsRef, {
+          ...item,
+          selectedForNextBuy: false,
+          inCart: false,
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        });
       }
     });
 
