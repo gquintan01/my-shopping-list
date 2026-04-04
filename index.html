@@ -331,11 +331,11 @@
         grid-template-columns: 1fr;
       }
 
-      .left-panel {
+      .right-panel {
         order: 1;
       }
 
-      .right-panel {
+      .left-panel {
         order: 2;
       }
 
@@ -423,6 +423,49 @@
 </section>
 
     <main class="grid">
+      <section class="card right-panel">
+        <h2>Lista de artículos seleccionados</h2>
+
+        <div class="stats">
+          <div class="stat-box">
+            <span>Total de artículos</span>
+            <strong id="totalItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Para próxima compra</span>
+            <strong id="selectedItems">0</strong>
+          </div>
+          <div class="stat-box">
+            <span>Cargados al carrito</span>
+            <strong id="completedItems">0</strong>
+          </div>
+        </div>
+
+        <div class="toolbar">
+          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
+          <select id="filterCategory">
+            <option value="">Todas las categorías</option>
+            <option value="Despensa">Despensa</option>
+            <option value="Lácteos y huevos">Lácteos y huevos</option>
+            <option value="Carnes y embutidos">Carnes y embutidos</option>
+            <option value="Frutas y vegetales">Frutas y vegetales</option>
+            <option value="Bebidas">Bebidas</option>
+            <option value="Limpieza">Limpieza</option>
+            <option value="Aseo personal">Aseo personal</option>
+            <option value="Hogar">Hogar</option>
+            <option value="Mascotas">Mascotas</option>
+            <option value="Otros">Otros</option>
+          </select>
+          <select id="viewMode">
+            <option value="active">Ver lista actual</option>
+            <option value="all">Ver todo</option>
+            <option value="completed">Ver cargados al carrito</option>
+          </select>
+        </div>
+
+        <div class="list-wrap" id="itemsContainer"></div>
+      </section>
+
       <section class="card left-panel">
         <h2 id="formTitle">Agregar artículo</h2>
 <form id="itemForm">
@@ -487,49 +530,6 @@
             
           </div>
         </form>
-      </section>
-
-      <section class="card right-panel">
-        <h2>Lista de artículos seleccionados</h2>
-
-        <div class="stats">
-          <div class="stat-box">
-            <span>Total de artículos</span>
-            <strong id="totalItems">0</strong>
-          </div>
-          <div class="stat-box">
-            <span>Para próxima compra</span>
-            <strong id="selectedItems">0</strong>
-          </div>
-          <div class="stat-box">
-            <span>Cargados al carrito</span>
-            <strong id="completedItems">0</strong>
-          </div>
-        </div>
-
-        <div class="toolbar">
-          <input id="searchInput" type="text" placeholder="Buscar artículo..." />
-          <select id="filterCategory">
-            <option value="">Todas las categorías</option>
-            <option value="Despensa">Despensa</option>
-            <option value="Lácteos y huevos">Lácteos y huevos</option>
-            <option value="Carnes y embutidos">Carnes y embutidos</option>
-            <option value="Frutas y vegetales">Frutas y vegetales</option>
-            <option value="Bebidas">Bebidas</option>
-            <option value="Limpieza">Limpieza</option>
-            <option value="Aseo personal">Aseo personal</option>
-            <option value="Hogar">Hogar</option>
-            <option value="Mascotas">Mascotas</option>
-            <option value="Otros">Otros</option>
-          </select>
-          <select id="viewMode">
-            <option value="active">Ver lista actual</option>
-            <option value="all">Ver todo</option>
-            <option value="completed">Ver cargados al carrito</option>
-          </select>
-        </div>
-
-        <div class="list-wrap" id="itemsContainer"></div>
       </section>
     </main>
   </div>
